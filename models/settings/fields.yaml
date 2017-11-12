@@ -1,0 +1,17 @@
+fields:
+    telegram_token:
+        label: Bot token
+        span: left
+
+    telegram_chat_id:
+        label: User id
+        span: right
+
+    disabled_exceptions:
+        label: Disabled notification
+        span: left
+        type: repeater
+        form:
+            fields:
+                class_name:
+                    label: Class name

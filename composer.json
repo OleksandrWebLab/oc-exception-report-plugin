@@ -1,0 +1,15 @@
+{
+  "name": "popcornphp/exceptionreport",
+  "description": "Report about exceptions to Telegram",
+  "type": "plugin",
+  "license": "MIT",
+  "homepage": "https://popcornphp.github.io",
+  "authors": [
+    {
+      "name": "Alexander Shapoval",
+      "email": "popcornphp@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {}
+}
