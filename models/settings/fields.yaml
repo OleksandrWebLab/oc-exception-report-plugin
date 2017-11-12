@@ -9,7 +9,8 @@ fields:
 
     disabled_exceptions:
         label: Disabled notification
-        span: left
+        commentAbove: This exceptions will be ignored
+        span: full
         type: repeater
         form:
             fields:
