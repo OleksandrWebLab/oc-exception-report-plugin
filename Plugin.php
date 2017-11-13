@@ -1,5 +1,6 @@
 <?php namespace PopcornPHP\ExceptionReport;
 
+use Backend\Facades\BackendAuth;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
@@ -24,9 +25,19 @@ class Plugin extends PluginBase
     public function boot()
     {
         App::error(function (Exception $exception) {
+            $settings = ExceptionReportSettings::instance();
+
+            if (config('app.debug') == true && $settings->disabled_in_debug == true) {
+                return;
+            }
+
+            if (BackendAuth::check() == true && $settings->disabled_for_admins == true) {
+                return;
+            }
+
             $exception_class_name = get_class($exception);
 
-            $disabled_classes = ExceptionReportSettings::get('disabled_exceptions');
+            $disabled_classes = $settings->disabled_exceptions;
 
             if (!collect($disabled_classes)->flatten()->contains($exception_class_name)) {
                 $info = 'You have new exception on ' . Request::url() . "\n\n";
@@ -38,7 +49,7 @@ class Plugin extends PluginBase
 
                 $gateway = new Telegram();
                 $gateway->sendMessage([
-                    'chat_id'    => ExceptionReportSettings::get('telegram_chat_id'),
+                    'chat_id'    => $settings->telegram_chat_id,
                     'text'       => $info . $class . $code . $file . $line . $message,
                     'parse_mode' => 'HTML',
                 ]);

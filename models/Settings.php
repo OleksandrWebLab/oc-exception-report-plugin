@@ -13,6 +13,8 @@ class Settings extends Model
 
     public function initSettingsData()
     {
+        $this->disabled_in_debug = false;
+        $this->disabled_for_admins = false;
         $this->disabled_exceptions = [
             [
                 'class_name' => 'October\Rain\Exception\AjaxException',
