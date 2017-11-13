@@ -1,6 +1,7 @@
 <?php namespace PopcornPHP\ExceptionReport;
 
 use Backend\Facades\BackendAuth;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
@@ -42,6 +43,7 @@ class Plugin extends PluginBase
             if (!collect($disabled_classes)->flatten()->contains($exception_class_name)) {
                 $info = 'You have new exception on ' . Request::url() . "\n\n";
                 $class = "<b>Exception class:</b> " . $exception_class_name . "\n\n";
+                $date = "<b>Date and Time:</b> " . Carbon::now() . "\n\n";
                 $code = "<b>Code:</b> " . $exception->getCode() . "\n\n";
                 $file = "<b>File:</b> " . $exception->getFile() . "\n\n";
                 $line = "<b>Line:</b> " . $exception->getLine() . "\n\n";
@@ -50,7 +52,7 @@ class Plugin extends PluginBase
                 $gateway = new Telegram();
                 $gateway->sendMessage([
                     'chat_id'    => $settings->telegram_chat_id,
-                    'text'       => $info . $class . $code . $file . $line . $message,
+                    'text'       => $info . $class . $date . $code . $file . $line . $message,
                     'parse_mode' => 'HTML',
                 ]);
             }
